@@ -124,7 +124,7 @@ function Register() {
               <button
                 type="button"
                 onClick={() => setShowPassword((v) => !v)}
-                className="absolute right-5 top-1/2 -translate-y-1/2"
+                className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground cursor-pointer"
               >
                 {showPassword ? (
                   <EyeOff className="h-5 w-5" />
@@ -143,7 +143,7 @@ function Register() {
             <button
               type="submit"
               disabled={isLoading}
-              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60"
+              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-primary py-4 cursor-pointer font-semibold text-primary-foreground disabled:cursor-not-allowed disabled:opacity-60"
             >
               {isLoading ? (
                 <>

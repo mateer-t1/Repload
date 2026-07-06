@@ -489,11 +489,7 @@ function RecentSessions({
                 )}
               </div>
 
-              <div className="col-span-1 text-right">
-                <button className="rounded p-1 text-muted-foreground hover:bg-muted/40 hover:text-foreground cursor-pointer">
-                  <MoreHorizontal className="h-4 w-4" />
-                </button>
-              </div>
+              
             </div>
           ))}
         </div>

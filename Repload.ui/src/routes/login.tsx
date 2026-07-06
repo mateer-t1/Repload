@@ -99,7 +99,7 @@ function Login() {
                   type="button"
                   disabled={isLoading}
                   onClick={() => setShowPassword((s) => !s)}
-                  className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                  className="absolute right-5 top-1/2 -translate-y-1/2 text-muted-foreground cursor-pointer"
                 >
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
@@ -115,7 +115,7 @@ function Login() {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full bg-primary text-primary-foreground font-semibold py-4 rounded-2xl hover:opacity-90 active:scale-[0.985] transition-all flex items-center justify-center gap-2 disabled:opacity-70"
+              className="w-full bg-primary text-primary-foreground font-semibold py-4 rounded-2xl hover:opacity-90 cursor-pointer active:scale-[0.985] transition-all flex items-center justify-center gap-2 disabled:opacity-70"
             >
               {isLoading ? (
                 <>
