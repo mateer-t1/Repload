@@ -1,0 +1,959 @@
+{
+  "info": {
+    "_postman_id": "repload-api-workflow",
+    "name": "Repload API - Complete Workflow",
+    "description": "Auth → Setup Exercises → Create Workout → Add Sets",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1-AUTH-Start-Here",
+      "item": [
+        {
+          "name": "Register User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.test('User registered successfully', function() {",
+                  "        pm.expect(jsonData).to.have.property('message');",
+                  "    });",
+                  "} else {",
+                  "    pm.test('Registration response', function() {",
+                  "        pm.expect([200, 400]).to.include(pm.response.code);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"testuser\",\n  \"email\": \"testuser@example.com\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "register"
+              ]
+            }
+          }
+        },
+        {
+          "name": "2. Login User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set('token', jsonData.token);",
+                  "    pm.test('Login successful - token captured', function() {",
+                  "        pm.expect(jsonData.token).to.be.a('string');",
+                  "        pm.expect(jsonData.token.length).to.be.greaterThan(0);",
+                  "    });",
+                  "} else {",
+                  "    pm.test('Login failed', function() {",
+                  "        pm.expect(pm.response.code).to.equal(200);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"password\": \"Password123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "auth",
+                "login"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "2-SETUP-Exercises",
+      "item": [
+        {
+          "name": "1. Create Test Exercise - Bench Press",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set('exerciseId1', jsonData.id);",
+                  "    pm.environment.set('exerciseName1', jsonData.name);",
+                  "    pm.test('Exercise created successfully', function() { pm.expect(jsonData.name).to.equal('Bench Press'); });",
+                  "} else {",
+                  "    pm.test('Failed to create exercise', function() { pm.expect(pm.response.code).to.equal(200); });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Bench Press\",\n  \"isCustom\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/exercises",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "exercises"
+              ]
+            }
+          }
+        },
+        {
+          "name": "2. Create Test Exercise - Squats",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set('exerciseId2', jsonData.id);",
+                  "    pm.environment.set('exerciseName2', jsonData.name);",
+                  "    pm.test('Exercise created successfully', function() { pm.expect(jsonData.name).to.equal('Squats'); });",
+                  "} else {",
+                  "    pm.test('Failed to create exercise', function() { pm.expect(pm.response.code).to.equal(200); });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Squats\",\n  \"isCustom\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/exercises",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "exercises"
+              ]
+            }
+          }
+        },
+        {
+          "name": "3. List All Exercises",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Exercises list retrieved', function() {",
+                  "    pm.expect(pm.response.code).to.equal(200);",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(Array.isArray(jsonData)).to.be.true;",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/exercises",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "exercises"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "3-WORKOUTS-Create",
+      "item": [
+        {
+          "name": "1. Create Workout",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const token = pm.environment.get('token');",
+                  "if (!token) {",
+                  "    throw new Error('Missing JWT token. Run Auth → Login first!');",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set('workoutId', jsonData.id);",
+                  "    pm.environment.set('workoutName', jsonData.name);",
+                  "    pm.test('Workout created successfully', function() {",
+                  "        pm.expect(jsonData.name).to.equal('Monday Push Day');",
+                  "        pm.expect(jsonData.userId).to.be.a('number');",
+                  "    });",
+                  "} else {",
+                  "    pm.test('Failed to create workout', function() { pm.expect(pm.response.code).to.equal(200); });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Monday Push Day\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/workouts",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "workouts"
+              ]
+            }
+          }
+        },
+        {
+          "name": "2. Get My Workouts",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Workouts retrieved successfully', function() {",
+                  "    pm.expect(pm.response.code).to.equal(200);",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(Array.isArray(jsonData)).to.be.true;",
+                  "    if (jsonData.length > 0) {",
+                  "        pm.expect(jsonData[0]).to.have.property('id');",
+                  "        pm.expect(jsonData[0]).to.have.property('name');",
+                  "    }",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/workouts/my",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "workouts",
+                "my"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "4-SETS-Add-and-Get",
+      "item": [
+        {
+          "name": "1. Add Set to Workout (Bench Press)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const token = pm.environment.get('token');",
+                  "const workoutId = pm.environment.get('workoutId');",
+                  "const exerciseId1 = pm.environment.get('exerciseId1');",
+                  "",
+                  "const missing = [];",
+                  "if (!token) missing.push('token');",
+                  "if (!workoutId) missing.push('workoutId');",
+                  "if (!exerciseId1) missing.push('exerciseId1');",
+                  "",
+                  "if (missing.length > 0) {",
+                  "    throw new Error('Missing: ' + missing.join(', '));",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set('setId1', jsonData.id);",
+                  "    pm.test('Set 1 added', function() {",
+                  "        pm.expect(jsonData.reps).to.equal(10);",
+                  "        pm.expect(jsonData.weight).to.equal(185);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"exerciseId\":{{exerciseId1}},\"reps\":10,\"weight\":185,\"setNumber\":1}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/workouts/{{workoutId}}/sets",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "workouts", "{{workoutId}}", "sets"]
+            }
+          }
+        },
+        {
+          "name": "2. Add Second Set to Workout (Bench Press)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const token = pm.environment.get('token');",
+                  "const workoutId = pm.environment.get('workoutId');",
+                  "const exerciseId1 = pm.environment.get('exerciseId1');",
+                  "",
+                  "const missing = [];",
+                  "if (!token) missing.push('token');",
+                  "if (!workoutId) missing.push('workoutId');",
+                  "if (!exerciseId1) missing.push('exerciseId1');",
+                  "",
+                  "if (missing.length > 0) {",
+                  "    throw new Error(",
+                  "        'Missing required variables: ' + missing.join(', ') + '.\\n' +",
+                  "        'Make sure to run Auth → Login and Setup requests first!'",
+                  "    );",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set('setId2', jsonData.id);",
+                  "    pm.test('Set added successfully', function() {",
+                  "        pm.expect(jsonData.reps).to.equal(8);",
+                  "        pm.expect(jsonData.weight).to.equal(195);",
+                  "    });",
+                  "} else {",
+                  "    pm.test('Failed to add set', function() { pm.expect(pm.response.code).to.equal(200); });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"exerciseId\": {{exerciseId1}},\n  \"reps\": 8,\n  \"weight\": 195,\n  \"setNumber\": 2\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/workouts/{{workoutId}}/sets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "workouts",
+                "{{workoutId}}",
+                "sets"
+              ]
+            }
+          }
+        },
+        {
+          "name": "3. Add Set with Squats",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const token = pm.environment.get('token');",
+                  "const workoutId = pm.environment.get('workoutId');",
+                  "const exerciseId2 = pm.environment.get('exerciseId2');",
+                  "",
+                  "const missing = [];",
+                  "if (!token) missing.push('token');",
+                  "if (!workoutId) missing.push('workoutId');",
+                  "if (!exerciseId2) missing.push('exerciseId2');",
+                  "",
+                  "if (missing.length > 0) {",
+                  "    throw new Error(",
+                  "        'Missing required variables: ' + missing.join(', ') + '.\\n' +",
+                  "        'Make sure to run Auth → Login and Setup requests first!'",
+                  "    );",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set('setId3', jsonData.id);",
+                  "    pm.test('Set added successfully', function() {",
+                  "        pm.expect(jsonData.reps).to.equal(12);",
+                  "        pm.expect(jsonData.weight).to.equal(225);",
+                  "    });",
+                  "} else {",
+                  "    pm.test('Failed to add set', function() { pm.expect(pm.response.code).to.equal(200); });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"exerciseId\": {{exerciseId2}},\n  \"reps\": 12,\n  \"weight\": 225,\n  \"setNumber\": 3\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/workouts/{{workoutId}}/sets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "workouts",
+                "{{workoutId}}",
+                "sets"
+              ]
+            }
+          }
+        },
+        {
+          "name": "4. Get All Sets for Workout",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const token = pm.environment.get('token');",
+                  "const workoutId = pm.environment.get('workoutId');",
+                  "",
+                  "const missing = [];",
+                  "if (!token) missing.push('token');",
+                  "if (!workoutId) missing.push('workoutId');",
+                  "",
+                  "if (missing.length > 0) {",
+                  "    throw new Error(",
+                  "        'Missing required variables: ' + missing.join(', ') + '.\\n' +",
+                  "        'Make sure to run Auth → Login and Workouts requests first!'",
+                  "    );",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Sets retrieved successfully', function() {",
+                  "    pm.expect(pm.response.code).to.equal(200);",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(Array.isArray(jsonData)).to.be.true;",
+                  "    pm.expect(jsonData.length).to.equal(3);",
+                  "    // Verify set structure",
+                  "    jsonData.forEach(function(set) {",
+                  "        pm.expect(set).to.have.property('id');",
+                  "        pm.expect(set).to.have.property('exerciseId');",
+                  "        pm.expect(set).to.have.property('exerciseName');",
+                  "        pm.expect(set).to.have.property('reps');",
+                  "        pm.expect(set).to.have.property('weight');",
+                  "        pm.expect(set).to.have.property('setNumber');",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/workouts/{{workoutId}}/sets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "workouts",
+                "{{workoutId}}",
+                "sets"
+              ]
+            }
+          }
+        },
+        {
+          "name": "5. Get Workout Full (with all sets and exercises)",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const token = pm.environment.get('token');",
+                  "const workoutId = pm.environment.get('workoutId');",
+                  "",
+                  "const missing = [];",
+                  "if (!token) missing.push('token');",
+                  "if (!workoutId) missing.push('workoutId');",
+                  "",
+                  "if (missing.length > 0) {",
+                  "    throw new Error(",
+                  "        'Missing required variables: ' + missing.join(', ') + '.\\n' +",
+                  "        'Make sure to run Auth → Login and Workouts requests first!'",
+                  "    );",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Full workout retrieved successfully', function() {",
+                  "    pm.expect(pm.response.code).to.equal(200);",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('id');",
+                  "    pm.expect(jsonData).to.have.property('name');",
+                  "    pm.expect(jsonData).to.have.property('sets');",
+                  "    pm.expect(Array.isArray(jsonData.sets)).to.be.true;",
+                  "    pm.expect(jsonData.sets.length).to.equal(3);",
+                  "    // Verify nested structure",
+                  "    jsonData.sets.forEach(function(set) {",
+                  "        pm.expect(set).to.have.property('id');",
+                  "        pm.expect(set).to.have.property('exerciseId');",
+                  "        pm.expect(set).to.have.property('exerciseName');",
+                  "        pm.expect(set).to.have.property('reps');",
+                  "        pm.expect(set).to.have.property('weight');",
+                  "    });",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/workouts/{{workoutId}}/full",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "workouts",
+                "{{workoutId}}",
+                "full"
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "5-TEST-Error-Cases",
+      "item": [
+        {
+          "name": "Error: Add set with invalid exercise ID",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const token = pm.environment.get('token');",
+                  "const workoutId = pm.environment.get('workoutId');",
+                  "",
+                  "const missing = [];",
+                  "if (!token) missing.push('token');",
+                  "if (!workoutId) missing.push('workoutId');",
+                  "",
+                  "if (missing.length > 0) {",
+                  "    throw new Error(",
+                  "        'Missing required variables: ' + missing.join(', ') + '.\\n' +",
+                  "        'Make sure to run Auth → Login and Workouts requests first!'",
+                  "    );",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Invalid exercise returns 404', function() {",
+                  "    pm.expect(pm.response.code).to.equal(404);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"exerciseId\": 99999,\n  \"reps\": 10,\n  \"weight\": 100,\n  \"setNumber\": 1\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/workouts/{{workoutId}}/sets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "workouts",
+                "{{workoutId}}",
+                "sets"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Error: Get sets for non-existent workout",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const token = pm.environment.get('token');",
+                  "if (!token) {",
+                  "    throw new Error('Missing JWT token. Run Auth → Login first!');",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Non-existent workout returns empty or 404', function() {",
+                  "    pm.expect([200, 404]).to.include(pm.response.code);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/workouts/99999/sets",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "workouts",
+                "99999",
+                "sets"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Error: Get full workout that doesn't exist",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const token = pm.environment.get('token');",
+                  "if (!token) {",
+                  "    throw new Error('Missing JWT token. Run Auth → Login first!');",
+                  "}"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Non-existent workout returns 404', function() {",
+                  "    pm.expect(pm.response.code).to.equal(404);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/workouts/99999/full",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "workouts",
+                "99999",
+                "full"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Error: Get exercise by ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Single exercise retrieved', function() {",
+                  "    pm.expect(pm.response.code).to.equal(200);",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.expect(jsonData).to.have.property('id');",
+                  "    pm.expect(jsonData).to.have.property('name');",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/exercises/{{exerciseId1}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "exercises",
+                "{{exerciseId1}}"
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "// Set default values if not already set",
+          "if (!pm.environment.get('baseUrl')) {",
+          "    pm.environment.set('baseUrl', 'http://localhost:5119');",
+          "}",
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5119",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string",
+      "description": "JWT token from login - set this manually after logging in"
+    },
+    {
+      "key": "workoutId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "exerciseId1",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "exerciseId2",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "setId1",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "setId2",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "setId3",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}
