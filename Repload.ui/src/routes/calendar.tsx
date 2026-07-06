@@ -1,7 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
 import {
-  ChevronLeft,
-  ChevronRight,
   Dumbbell,
   Trophy,
 } from "lucide-react";

@@ -124,7 +124,6 @@ export function Dashboard() {
 // SIDEBAR  
 
 function Sidebar({
-  sessionsThisWeek,
 }: {
   sessionsThisWeek: number;
 }) {
@@ -175,7 +174,7 @@ function Sidebar({
 
 // TOP BAR
 
-function TopBar({ username }: { username: string }) {
+function TopBar({  }: { username: string }) {
   const navigate = useNavigate();
 
   return (
