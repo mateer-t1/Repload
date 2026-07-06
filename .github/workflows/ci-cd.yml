@@ -1,0 +1,51 @@
+name: Repload CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build-api:
+    name: Build and Test ASP.NET API
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Restore dependencies
+        run: dotnet restore Repload.API
+
+      - name: Build project
+        run: dotnet build Repload.API --configuration Release --no-restore
+
+      - name: Run tests
+        run: dotnet test Repload.API --configuration Release --no-build --verbosity normal
+
+  build-ui:
+    name: Build React UI
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install dependencies
+        working-directory: Repload.ui
+        run: npm install
+
+      - name: Build frontend
+        working-directory: Repload.ui
+        run: npm run build  
