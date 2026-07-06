@@ -6,7 +6,6 @@ import {
   Dumbbell,
   LineChart,
   Plus,
-  Target,
   Trophy,
 } from "lucide-react";
 import { logout } from "../lib/api";
