@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState, useMemo } from "react";
-import { Award, Flame, Medal, Trophy, Loader2, Info } from "lucide-react";
+import { Award, Medal, Trophy, Loader2, Info } from "lucide-react";
 import { AppShell, PageHeader } from "../components/app-shell";
 import { getRecords } from "../lib/api";
 
@@ -11,12 +11,6 @@ type RawRecord = {
   date: string;
 };
 
-const statIcons: Record<string, React.ElementType> = {
-  "Unique Lifts": Trophy,
-  "Max Weight": Medal,
-  "Endurance Lifts": Award,
-  "Top e1RM": Flame,
-};
 
 export const Route = createFileRoute("/records")({
   component: RecordsPage,
@@ -35,7 +29,7 @@ function RecordsPage() {
   const navigate = useNavigate();
   const [data, setData] = useState<RawRecord[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  // const [error, setError] = useState("");
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -49,7 +43,7 @@ function RecordsPage() {
         const res = await getRecords();
         setData(res.records ?? []);
       } catch (err: any) {
-        setError(err?.message ?? "Failed to load records");
+       
       } finally {
         setLoading(false);
       }
@@ -111,7 +105,6 @@ function RecordsPage() {
 
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
         {stats.map((s) => {
-          const Icon = statIcons[s.label] ?? Flame;
           return (
             <div key={s.label} className="rounded-xl border border-border/60 bg-card/40 p-5">
               <span className="text-xs uppercase text-muted-foreground">{s.label}</span>

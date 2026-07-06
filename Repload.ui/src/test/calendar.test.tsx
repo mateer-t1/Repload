@@ -2,8 +2,6 @@ import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import "@testing-library/jest-dom/vitest";
-import React from "react";
-
 import { CalendarPage } from "../routes/calendar";
 import * as api from "../lib/api";
 

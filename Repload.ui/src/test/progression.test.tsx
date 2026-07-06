@@ -1,7 +1,5 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import React from "react";
-
 import { createRouter, RouterProvider, createMemoryHistory } from "@tanstack/react-router";
 import { routeTree } from "../routeTree.gen";
 

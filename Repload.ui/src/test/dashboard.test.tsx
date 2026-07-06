@@ -1,8 +1,6 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import "@testing-library/jest-dom/vitest";
-import React from "react";
-
 import { Dashboard } from "../routes/dashboard";
 import * as api from "../lib/api";
 

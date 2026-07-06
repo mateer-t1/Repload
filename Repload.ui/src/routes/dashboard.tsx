@@ -236,7 +236,6 @@ function Header({
 // STAT GRID
 
 function StatGrid({
-  data,
   weekTotal,
 }: {
   data: DashboardData;
