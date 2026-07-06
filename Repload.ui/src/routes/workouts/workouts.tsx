@@ -278,10 +278,13 @@ export default function WorkoutsPage() {
           ))
         )}
       </div>
-<WorkoutBuilder
-  date={new Date().toISOString().split("T")[0]}
-  onSave={handleSaveWorkout}
-/>
+
+      {builderOpen && (
+        <WorkoutBuilder
+          date={new Date().toISOString().split("T")[0]}
+          onSave={handleSaveWorkout}
+        />
+      )}
     </AppShell>
   );
 }
