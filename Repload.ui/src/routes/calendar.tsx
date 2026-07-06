@@ -263,7 +263,8 @@
 
               <button
                 onClick={closeBuilder}
-                className="mt-3 text-sm text-muted-foreground"
+                className="mt-3 text-sm text-muted-foreground cursor-pointer"
+
               >
                 Close
               </button>

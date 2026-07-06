@@ -259,7 +259,7 @@ export function WorkoutBuilder({
                 <button
                   key={ex.id}
                   onClick={() => addExercise(ex)}
-                  className="w-full text-left px-3 py-2 text-sm hover:bg-muted/40 p-2 cursor-pointer"
+                  className="w-full text-left px-3 py-2 text-sm hover:bg-muted/40 cursor-pointer"
                 >
                   {ex.name}
                 </button>
@@ -267,12 +267,12 @@ export function WorkoutBuilder({
 
             {!searching && (
               <div className="p-2 border-t">
-                <button
+                <button 
                   onClick={() => {
                     setCustomName(query);
                     setShowCustomForm(true);
                   }}
-                  className="text-xs text-primary hover:underline/40 p-2 cursor-pointer"
+                  className="text-xs text-primary hover:underline p-2 cursor-pointer"
                 >
                   Do not see your exercise? Add your own
                 </button>
@@ -292,7 +292,7 @@ export function WorkoutBuilder({
                   <button
                     onClick={handleCreateCustomExercise}
                     disabled={creating}
-                    className="text-xs text-primary/40 p-2 cursor-pointer"
+                    className="text-xs text-primary p-2 cursor-pointer disabled:opacity-50"
                   >
                     {creating ? "Creating..." : "Create"}
                   </button>
@@ -302,7 +302,7 @@ export function WorkoutBuilder({
                       setShowCustomForm(false);
                       setCustomName("");
                     }}
-                    className="text-xs text-red-400 hover:40 p-2 cursor-pointer"
+                    className="text-xs text-red-400 hover:underline p-2 cursor-pointer"
                   >
                     Cancel
                   </button>
@@ -329,7 +329,7 @@ export function WorkoutBuilder({
 
                 <button
                   onClick={() => removeExercise(exerciseId)}
-                  className="text-red-500"
+                  className="text-red-500 cursor-pointer"
                 >
                   <Trash className="h-4 w-4" />
                 </button>
@@ -369,7 +369,7 @@ export function WorkoutBuilder({
 
               <button
                 onClick={() => addSet(exerciseId)}
-                className="text-xs text-primary hover:underline/40 p-2 cursor-pointer"
+                className="text-xs text-primary hover:underline p-2 cursor-pointer"
               >
                 + Add set
               </button>
@@ -385,7 +385,7 @@ export function WorkoutBuilder({
       <button
         onClick={handleSave}
         disabled={loading || savingSets || sets.length === 0}
-        className="w-full bg-primary text-white py-2 rounded-md disabled:opacity-50 font-medium/40 p-2 cursor-pointer"
+        className="w-full bg-primary text-white py-2 rounded-md disabled:opacity-50 font-medium cursor-pointer"
       >
         {savingSets ? "Saving..." : "Save Workout"}
       </button>

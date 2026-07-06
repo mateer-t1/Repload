@@ -224,7 +224,7 @@ export function WorkoutPage() {
       <div className="p-6 space-y-6">
         <button
           onClick={() => setShowDeleteConfirm(true)}
-          className="flex items-center gap-2 px-4 py-2 border border-red-500/30 text-red-500 rounded-lg"
+          className="flex items-center gap-2 px-4 py-2 border border-red-500/30 text-red-500 rounded-lg hover:bg-red-500/10 transition cursor-pointer"
         >
           <Trash2 size={16} />
           Delete Workout
@@ -266,11 +266,11 @@ export function WorkoutPage() {
               <h2 className="font-bold">{name}</h2>
 
               <div className="flex gap-3">
-                <button onClick={() => addSet(name)} className="text-sm text-primary">
+                <button onClick={() => addSet(name)} className="text-sm text-primary cursor-pointer">
                   + Add set
                 </button>
 
-                <button onClick={() => deleteExercise(name)} className="text-sm text-red-500">
+                <button onClick={() => deleteExercise(name)} className="text-sm text-red-500 cursor-pointer">
                   Delete
                 </button>
               </div>
@@ -304,7 +304,7 @@ export function WorkoutPage() {
 
         <button
           onClick={handleSave}
-          className="w-full bg-primary text-black font-semibold py-2 rounded"
+          className="w-full bg-primary text-black font-semibold py-2 rounded cursor-pointer"
         >
           {saving ? "Saving..." : "Save Changes"}
         </button>
