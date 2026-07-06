@@ -99,8 +99,8 @@ public async Task<IActionResult> SearchExercises(string query)
         {
             var name = e.Name.ToLower();
 
-            if (name == query) return 0;                
-            if (name.StartsWith(query)) return 1;        
+            if (name == query) return 0;                 
+            if (name.StartsWith(query)) return 1;         
             if (name.Contains(query)) return 2;          
             return 3;
         })
