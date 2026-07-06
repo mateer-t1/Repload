@@ -200,8 +200,15 @@ export async function createExercise(name: string): Promise<ExerciseDTO> {
 
 // RECORDS
 
+export type RecordItem = {
+  lift: string;
+  weight: number;
+  reps: number;
+  date: string;
+};
+
 export type RecordsData = {
-  records: never[];
+  records: RecordItem[];
   headline: {
     lift: string;
     weight: number;
@@ -209,18 +216,8 @@ export type RecordsData = {
     date: string;
     e1rm: number;
   }[];
-  allRecords: {
-    lift: string;
-    bestWeight: number;
-    bestReps: number;
-    e1rm: number;
-    days: number;
-    date: string;
-  }[];
-  stats: {
-    label: string;
-    value: string;
-  }[];
+  allRecords: RecordItem[];
+  stats: any[];
 };
 
 export async function getRecords(): Promise<RecordsData> {
